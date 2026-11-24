@@ -28,6 +28,7 @@ create table public.enquiries (
   package_id uuid references public.packages(id) on delete set null,
   estimated_total numeric(12,2),
   notes text,
+  quote_details jsonb not null default '{}'::jsonb,
   status text not null default 'new',
   created_at timestamptz not null default now()
 );
@@ -57,12 +58,12 @@ create or replace function public.is_admin()
 returns boolean language sql stable security definer set search_path = public
 as $$ select exists(select 1 from public.profiles where id = auth.uid() and role = 'admin'); $$;
 create policy "profiles read own or admin" on public.profiles for select using (id = auth.uid() or public.is_admin());
-create policy "profiles update own" on public.profiles for update using (id = auth.uid()) with check (id = auth.uid());
+-- Profile role is not user-editable; assign admin roles only through trusted SQL.\nrevoke update on table public.profiles from authenticated;
 create policy "public read active packages" on public.packages for select using (active = true or public.is_admin());
 create policy "admin manage packages" on public.packages for all using (public.is_admin()) with check (public.is_admin());
-create policy "customer create enquiry" on public.enquiries for insert with check (customer_id is null or customer_id = auth.uid());
-create policy "customer read own enquiries" on public.enquiries for select using (customer_id = auth.uid() or public.is_admin());
-create policy "admin update enquiries" on public.enquiries for update using (public.is_admin()) with check (public.is_admin());
+create policy "admin insert quotations" on public.enquiries for insert to authenticated with check (public.is_admin());
+create policy "admin read quotations" on public.enquiries for select to authenticated using (public.is_admin());
+create policy "admin update quotations" on public.enquiries for update to authenticated using (public.is_admin()) with check (public.is_admin());
 create policy "public read gallery" on public.gallery_items for select using (true);
 create policy "admin manage gallery" on public.gallery_items for all using (public.is_admin()) with check (public.is_admin());
 create policy "public read site settings" on public.site_settings for select using (true);
@@ -82,3 +83,10 @@ create or replace function public.handle_new_user()
 returns trigger language plpgsql security definer set search_path = public
 as $$ begin insert into public.profiles(id,full_name,role) values(new.id, coalesce(new.raw_user_meta_data->>'full_name',''), 'customer'); return new; end; $$;
 create trigger on_auth_user_created after insert on auth.users for each row execute procedure public.handle_new_user();
+
+-- Required table privileges; row-level security above limits admin-only writes.
+GRANT USAGE ON SCHEMA public TO anon, authenticated;
+GRANT SELECT ON public.packages, public.gallery_items, public.site_settings TO anon, authenticated;
+GRANT SELECT ON public.profiles TO authenticated;
+GRANT INSERT, SELECT, UPDATE ON public.enquiries TO authenticated;
+GRANT INSERT, UPDATE, DELETE ON public.packages, public.gallery_items, public.site_settings TO authenticated;
