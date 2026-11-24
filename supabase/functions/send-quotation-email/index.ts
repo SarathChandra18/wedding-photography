@@ -17,7 +17,10 @@ serve(async (req) => {
     const authHeader = req.headers.get('Authorization') || ''
     const token = authHeader.replace(/^Bearer\s+/i, '')
     if (!token) return json({ error: 'Authentication required' }, 401)
-    const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_ANON_KEY')!, {
+    const publishableKeys = JSON.parse(Deno.env.get('SUPABASE_PUBLISHABLE_KEYS') || '{}')
+    const anonKey = Deno.env.get('SUPABASE_ANON_KEY') || Object.values(publishableKeys)[0] as string
+    if (!anonKey) return json({ error: 'Supabase publishable key is unavailable to the email function' }, 500)
+    const supabase = createClient(Deno.env.get('SUPABASE_URL')!, anonKey, {
       global: { headers: { Authorization: 'Bearer ' + token } },
       auth: { persistSession: false, autoRefreshToken: false },
     })
