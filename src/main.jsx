@@ -6,8 +6,8 @@ import {Camera, Menu, X, ArrowUpRight, Instagram, Play, ChevronRight, ShieldChec
 import {jsPDF} from 'jspdf';
 import './style.css';
 
-const supabaseUrl=import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey=import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl=import.meta.env.VITE_SUPABASE_URL || 'https://xrbshdwrscczymizjthn.supabase.co';
+const supabaseKey=import.meta.env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_Dyswp6Ay9wzYQ7I4zPuC6A_s7eROkmN';
 export const supabase=supabaseUrl&&supabaseKey?createClient(supabaseUrl,supabaseKey):null;
 const demoPackages=[
  {id:'p1',name:'The Intimate',tag:'For meaningful moments',price:24999,days:1,features:['1 candid photographer','1 traditional photographer','300 edited photographs','Online gallery']},
