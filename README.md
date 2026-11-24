@@ -40,3 +40,4 @@ Deploy the Supabase Edge Function in `supabase/functions/send-quotation-email` a
 - `RESEND_FROM_EMAIL` (a sender address verified with Resend)
 
 The quotation flow saves the enquiry and invokes this function to email the customer and notify the studio. The PDF is downloaded in the customer's browser; the current email function sends the quotation summary, not the PDF attachment. Add server-side PDF generation or pass a validated PDF attachment if an emailed PDF is required.
+Supabase build configuration updated
