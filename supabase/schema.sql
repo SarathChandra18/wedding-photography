@@ -58,7 +58,8 @@ create or replace function public.is_admin()
 returns boolean language sql stable security definer set search_path = public
 as $$ select exists(select 1 from public.profiles where id = auth.uid() and role = 'admin'); $$;
 create policy "profiles read own or admin" on public.profiles for select using (id = auth.uid() or public.is_admin());
--- Profile role is not user-editable; assign admin roles only through trusted SQL.\nrevoke update on table public.profiles from authenticated;
+-- Profile role is not user-editable; assign admin roles only through trusted SQL.
+revoke update on table public.profiles from authenticated, anon;
 create policy "public read active packages" on public.packages for select using (active = true or public.is_admin());
 create policy "admin manage packages" on public.packages for all using (public.is_admin()) with check (public.is_admin());
 create policy "admin insert quotations" on public.enquiries for insert to authenticated with check (public.is_admin());
