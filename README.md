@@ -4,9 +4,9 @@ A premium React + Supabase photography-studio website. The repository includes t
 
 ## Live application
 
-- Website: https://d4cc854e-wedding-photography-1.sarath9-araveti.workers.dev/
-- Studio admin: https://d4cc854e-wedding-photography-1.sarath9-araveti.workers.dev/studio-admin
-- Quotation builder (admin only): https://d4cc854e-wedding-photography-1.sarath9-araveti.workers.dev/studio-admin/quotation
+- Website: https://wedding-photography-1.sarath9-araveti.workers.dev/
+- Studio admin: https://wedding-photography-1.sarath9-araveti.workers.dev/studio-admin
+- Quotation builder (admin only): https://wedding-photography-1.sarath9-araveti.workers.dev/studio-admin/quotation
 
 ## Quotation PDF
 
@@ -44,7 +44,7 @@ Do not make the role editable from the public application.
 Set the Site URL to the deployed website URL and add this redirect URL:
 
 ```
-https://d4cc854e-wedding-photography-1.sarath9-araveti.workers.dev/**
+https://wedding-photography-1.sarath9-araveti.workers.dev/**
 ```
 
 Use email/password authentication. For reliable customer verification email delivery, configure a custom SMTP provider rather than relying on the low-volume default email service.
