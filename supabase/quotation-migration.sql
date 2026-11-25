@@ -25,3 +25,6 @@ grant insert, select, update on table public.enquiries to authenticated;
 grant insert, update, delete on table public.packages to authenticated;
 
 -- Admin-only access is enforced by RLS; grants alone do not bypass policies.
+
+-- Refresh PostgREST's schema cache so the quotation field is available immediately.
+notify pgrst, 'reload schema';
