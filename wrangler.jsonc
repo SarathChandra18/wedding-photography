@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "wedding-photography-1",
+  "name": "d4cc854e-wedding-photography-1",
   "compatibility_date": "2026-11-25",
   "assets": {
     "directory": "./dist",
