@@ -47,7 +47,7 @@ function makeQuotationPdf(q){
   doc.text('Thank you for considering our studio.',105,285,{align:'center'});
   doc.text('PAGE '+page,188,285,{align:'right'});
  };
- const newPage=()=>{footer();doc.addPage();page++;header();y=53;};
+ const newPage=()=>{footer();doc.addPage();page++;header();y=64;};
  const ensure=height=>{if(y+height>267)newPage();};
  const sectionTitle=label=>{
   ensure(13);doc.setFont('times','bold');doc.setFontSize(12);doc.setTextColor(...ink);doc.text(label,22,y);
@@ -82,7 +82,7 @@ function makeQuotationPdf(q){
   const detailLines=unit?doc.splitTextToSize(unit,86):[];
   const rowHeight=Math.max(9,(labelLines.length+detailLines.length)*3.5+3);
   ensure(rowHeight+3);
-  if(y===53||y<65)drawTableHead();
+  if(y<65)drawTableHead();
   doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(...ink);
   doc.text(labelLines,26,y);
   if(detailLines.length){doc.setFontSize(7);doc.setTextColor(...muted);doc.text(detailLines,26,y+labelLines.length*3.5);}
