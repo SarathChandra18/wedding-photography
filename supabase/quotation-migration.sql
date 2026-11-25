@@ -25,6 +25,8 @@ grant insert, select, update on table public.enquiries to authenticated;
 grant insert, update, delete on table public.packages to authenticated;
 
 -- Admin-only access is enforced by RLS; grants alone do not bypass policies.
+-- The admin pricing editor upserts service_rates, so authenticated admins need INSERT as well as SELECT/UPDATE.
+grant insert, select, update on table public.site_settings to authenticated;
 
 -- Refresh PostgREST's schema cache so the quotation field is available immediately.
 notify pgrst, 'reload schema';
