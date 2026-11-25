@@ -76,6 +76,7 @@ function makeQuotationPdf(q){
  drawTableHead();
  const rows=(q.lines||[]).filter(row=>row.label);
  for(const row of rows){
+  doc.setFont('helvetica','normal');doc.setFontSize(8.5);
   const labelLines=doc.splitTextToSize(String(row.label||'Service'),86);
   const unit=String(row.unit||'');
   const detailLines=unit?doc.splitTextToSize(unit,86):[];
